@@ -28,6 +28,9 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::put("/courses_users/{course_id}/rejected", [BookingController::class, 'rejectedCoursesUsers']);
 });
 
+// Route::group(['middleware' => 'admin'], function () {
+//     Route::get("/courses_users", [BookingController::class, 'getCoursesUsers']);
+// });
 // Route::middleware(['admin'])->group(function () {
     // Route::put("/courses/{course_id}", [BookingController::class, 'editStatusCourse']);
 // });

@@ -67,6 +67,8 @@ class BookingController extends Controller
 
     public function getCoursesUsers()
     {
+        $user = Auth::user();
+        if($user->role === 'admin') {
         $courses = DB::table('course_user')
             ->join('courses', 'course_user.course_id', '=', 'courses.id')            
             ->leftJoin('activities', 'courses.activity_id', '=', 'activities.id')
@@ -85,10 +87,15 @@ class BookingController extends Controller
             return response()->json([
                 'courses' => $courses
                ], 200);
+            } else {
+                return response()->json([ 'message' => 'non hai i permessi'], 401);
+            }
     }
 
     public function acceptedCoursesUsers($course_id, Request $request)
     {
+        $user = Auth::user();
+        if($user->role === 'admin') {
         $course = DB::table('course_user')
         ->where('course_id', $course_id)
         ->where('user_id', $request->user_id)
@@ -102,10 +109,15 @@ class BookingController extends Controller
 
             return response()->json(['message' => 'Stato del corso aggiornato con successo'], 200);
         }
+        } else {
+        return response()->json([ 'message' => 'non hai i permessi'], 401);
+        }
     }
 
     public function rejectedCoursesUsers($course_id, Request $request)
     {
+        $user = Auth::user();
+        if($user->role === 'admin') {
         $course = DB::table('course_user')
         ->where('course_id', $course_id)
         ->where('user_id', $request->user_id)
@@ -118,6 +130,9 @@ class BookingController extends Controller
             ->update(['status' => 'rejected']);
 
             return response()->json(['message' => 'Stato del corso aggiornato con successo'], 200);
+        }
+        } else {
+        return response()->json([ 'message' => 'non hai i permessi'], 401);
         }
     }
     
